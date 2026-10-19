@@ -19,13 +19,13 @@ namespace FofX.Stateful
         public override bool isView => false;
 
         private Dictionary<string, IStateNode> _children = new Dictionary<string, IStateNode>();
-        private Observable<StateOperation> _observable;
+        private ObservableEventStream<StateOperation> _observable;
 
         public StateObject() : base() { }
 
         protected override void InitializeInternal()
         {
-            _observable = new Observable<StateOperation>(context, default);
+            _observable = new ObservableEventStream<StateOperation>(context, default);
 
             var type = GetType();
             var inheritedAttributes = attributes.Where(x => x is IInheritableStateAttribute inheritable && inheritable.inherit);
@@ -107,10 +107,10 @@ namespace FofX.Stateful
         protected override IStateNode GetChildInternal(string childName)
             => _children[childName];
 
-        public override IDisposable Subscribe(ObserveThing.IObserver<IOperation> observer, bool immediate = false, uint? priority = null)
+        public override IDisposable Subscribe(IEventStreamObserver<StateOperation> observer, bool immediate = false, uint? priority = null)
             => _observable.Subscribe(observer, immediate, priority);
 
-        public override IDisposable Subscribe(ObserveThing.IObserver<StateOperation> observer, bool immediate = false, uint? priority = null)
+        public override IDisposable Subscribe(IEventStreamObserver observer, bool immediate = false, uint? priority = null)
             => _observable.Subscribe(observer, immediate, priority);
     }
 }

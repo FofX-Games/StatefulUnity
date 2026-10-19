@@ -9,7 +9,7 @@
     }
   ],
   "dependencies": {
-    "com.fofx.observething": "1.1.0",
+    "com.fofx.observething": "https://github.com/fofx-games/ObserveThing.git?path=Assets/Package/Core#29aa851333856ff6b329fe6a90c8951b2b8f4228",
     "com.unity.ai.navigation": "2.0.9",
     "com.unity.collab-proxy": "2.11.2",
     "com.unity.ide.rider": "3.0.38",

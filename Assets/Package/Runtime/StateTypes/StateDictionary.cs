@@ -329,15 +329,15 @@ namespace FofX.Stateful
             _dictionary.Dispose();
         }
 
-        public override IDisposable Subscribe(ObserveThing.IObserver<IOperation> observer, bool immediate = false, uint? priority = null)
+        public override IDisposable Subscribe(IEventStreamObserver<StateOperation> observer, bool immediate = false, uint? priority = null)
             => Subscribe(new DictionaryObserver<TKey, TValue>(
-                onAdd: (id, kvp) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Add, child = kvp.Value, elementId = id }),
-                onRemove: (id, kvp) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Remove, child = kvp.Value, elementId = id }),
+                onAdd: (id, kvp) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Add, param = kvp.Key, child = kvp.Value, elementId = id }),
+                onRemove: (id, kvp) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Remove, param = kvp.Key, child = kvp.Value, elementId = id }),
                 onDispose: observer.OnDispose,
                 onError: observer.OnError
             ), immediate, priority);
 
-        public override IDisposable Subscribe(ObserveThing.IObserver<StateOperation> observer, bool immediate = false, uint? priority = null)
+        public override IDisposable Subscribe(IEventStreamObserver observer, bool immediate = false, uint? priority = null)
             => Subscribe(new DictionaryObserver<TKey, TValue>(
                 onAdd: (id, kvp) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Add, param = kvp.Key, child = kvp.Value, elementId = id }),
                 onRemove: (id, kvp) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Remove, param = kvp.Key, child = kvp.Value, elementId = id }),
