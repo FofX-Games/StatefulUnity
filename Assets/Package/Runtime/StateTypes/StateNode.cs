@@ -150,7 +150,7 @@ namespace FofX.Stateful
                 child.Dispose();
         }
 
-        public abstract IDisposable Subscribe(ObserveThing.IObserver<StateOperation> observer, bool immediate = false, uint? priority = null);
-        public abstract IDisposable Subscribe(ObserveThing.IObserver<IOperation> observer, bool immediate = false, uint? priority = null);
+        public abstract IDisposable Subscribe(IEventStreamObserver<StateOperation> observer, bool immediate = false, uint? priority = null);
+        public abstract IDisposable Subscribe(IEventStreamObserver observer, bool immediate = false, uint? priority = null);
     }
 }

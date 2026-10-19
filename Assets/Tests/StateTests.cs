@@ -13,7 +13,7 @@ namespace FofX.Stateful.Tests
         [SetUp]
         public void SetUp()
         {
-            Settings.DefaultExceptionHandler = UnityEngine.Debug.LogException;
+            ObservationDefaults.DefaultExceptionHandler = UnityEngine.Debug.LogException;
         }
 
         public class TestState : StateObject
@@ -241,18 +241,20 @@ namespace FofX.Stateful.Tests
             Assert.AreEqual(false, disposed);
             Assert.AreEqual(null, exception);
 
+            UnityEngine.Debug.Log(string.Join("\n", observedOps.Select(x => x.ToString())));
+
             Assert.AreEqual(
-                observedOps,
                 new (IStateNode source, OpType opType, object param, IStateNode child)[]
                 {
-                    new(state.dict, OpType.Add, 10, element10),
-                    new(element10, OpType.Set, null, null),
-                    new(state.dict, OpType.Add, 100, state.dict[100]),
-                    new(state.dict[100], OpType.Set, null, null),
-                    new(state.dict[100], OpType.Set, "me", null),
-                    new(element10, OpType.Set, "you", null),
-                    new(state.dict, OpType.Remove, 10, element10),
-                }
+                    new () { source = state.dict, opType = OpType.Add, param = 10, child = element10 },
+                    new () { source = element10, opType = OpType.Set, param = null, child = null },
+                    new () { source = state.dict, opType = OpType.Add, param = 100, child = state.dict[100] },
+                    new () { source = state.dict[100], opType = OpType.Set, param = null, child = null },
+                    new () { source = state.dict[100], opType = OpType.Set, param = "me", child = null },
+                    new () { source = element10, opType = OpType.Set, param = "you", child = null },
+                    new () { source = state.dict, opType = OpType.Remove, param = 10, child = element10 },
+                },
+                observedOps
             );
 
             observedOps.Clear();
@@ -283,7 +285,7 @@ namespace FofX.Stateful.Tests
         public void TestStateValueArray()
         {
             var array = new StateValueArray<int>();
-            array.Initialize(Settings.DefaultObservationContext, new DefaultLogger() { logLevel = LogLevel.Debug }, "root");
+            array.Initialize(ObservationDefaults.DefaultObservationContext, new DefaultLogger() { logLevel = LogLevel.Debug }, "root");
 
             int callCount = 0;
             IReadOnlyList<int> value = default;

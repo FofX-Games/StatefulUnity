@@ -187,14 +187,14 @@ namespace FofX.Stateful
         public override JSONNode ToJSON(Func<IStateNode, bool> filter)
             => JSONSerialization.ToJSON(value);
 
-        public override IDisposable Subscribe(ObserveThing.IObserver<IOperation> observer, bool immediate = false, uint? priority = null)
+        public override IDisposable Subscribe(IEventStreamObserver<StateOperation> observer, bool immediate = false, uint? priority = null)
             => _value.Subscribe(new ValueObserver<T>(
                 onNext: x => observer.OnNext(new StateOperation() { source = this, opType = OpType.Set, param = x }),
                 onDispose: observer.OnDispose,
                 onError: observer.OnError
             ), immediate, priority);
 
-        public override IDisposable Subscribe(ObserveThing.IObserver<StateOperation> observer, bool immediate = false, uint? priority = null)
+        public override IDisposable Subscribe(IEventStreamObserver observer, bool immediate = false, uint? priority = null)
             => _value.Subscribe(new ValueObserver<T>(
                 onNext: x => observer.OnNext(new StateOperation() { source = this, opType = OpType.Set, param = x }),
                 onDispose: observer.OnDispose,

@@ -13,7 +13,7 @@ namespace FofX.Stateful
         Remove
     }
 
-    public struct StateOperation : IOperation
+    public struct StateOperation
     {
         public IStateNode source;
         public OpType opType;
@@ -21,13 +21,11 @@ namespace FofX.Stateful
         public uint elementId;
         public IStateNode child;
 
-        ObserveThing.IObservable<IOperation> IOperation.source => (ObserveThing.IObservable<IOperation>)source;
-
         public override string ToString()
             => $"[{opType}] source={source.nodePath} param={param?.ToString() ?? "NULL"} elementId={elementId} child={child?.nodeName ?? "NULL"}";
     }
 
-    public interface IStateNode : ObserveThing.IObservable<StateOperation>, IDisposable
+    public interface IStateNode : IEventStreamObservable<StateOperation>, IDisposable
     {
         new ObservationContext context { get; }
         Attribute[] attributes { get; }

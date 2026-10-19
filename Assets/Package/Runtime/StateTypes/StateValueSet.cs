@@ -271,7 +271,7 @@ namespace FofX.Stateful
             _set.Dispose();
         }
 
-        public override IDisposable Subscribe(ObserveThing.IObserver<IOperation> observer, bool immediate = false, uint? priority = null)
+        public override IDisposable Subscribe(IEventStreamObserver<StateOperation> observer, bool immediate = false, uint? priority = null)
             => Subscribe(new SetObserver<T>(
                 onAdd: (id, element) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Add, param = element, elementId = id }),
                 onRemove: (id, element) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Remove, param = element, elementId = id }),
@@ -279,7 +279,7 @@ namespace FofX.Stateful
                 onError: observer.OnError
             ), immediate, priority);
 
-        public override IDisposable Subscribe(ObserveThing.IObserver<StateOperation> observer, bool immediate = false, uint? priority = null)
+        public override IDisposable Subscribe(IEventStreamObserver observer, bool immediate = false, uint? priority = null)
             => Subscribe(new SetObserver<T>(
                 onAdd: (id, element) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Add, param = element, elementId = id }),
                 onRemove: (id, element) => observer.OnNext(new StateOperation() { source = this, opType = OpType.Remove, param = element, elementId = id }),

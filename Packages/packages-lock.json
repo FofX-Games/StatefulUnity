@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "com.fofx.observething": {
-      "version": "1.0.0",
+      "version": "https://github.com/fofx-games/ObserveThing.git?path=Assets/Package/Core#29aa851333856ff6b329fe6a90c8951b2b8f4228",
       "depth": 0,
-      "source": "registry",
+      "source": "git",
       "dependencies": {},
-      "url": "https://registry.npmjs.org"
+      "hash": "29aa851333856ff6b329fe6a90c8951b2b8f4228"
     },
     "com.unity.ai.navigation": {
       "version": "2.0.9",
