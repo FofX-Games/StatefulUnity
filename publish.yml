@@ -1,0 +1,6 @@
+packages:
+  stateful:
+    path: Assets/Package
+    major_minor: "1.1"
+    registry: npm
+    identity: com.fofx.stateful
